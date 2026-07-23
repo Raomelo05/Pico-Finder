@@ -94,3 +94,27 @@ body: é um parâmetro nomeado do Scaffold.
 Center() ; classe com objetivo de centralizar o widget
 
 child: parametro do construtor de Center que recebe um Text por ex
+
+### diferentes tipos de widgets
+Widgets de organização
+
+Scaffold
+SafeArea
+Column
+Row
+Padding
+Center
+SizedBox
+
+Widgets de interação
+TextField
+ElevatedButton
+IconButton
+GestureDetector
+Checkbox
+
+Widgets de exibição
+Text
+Icon
+Image
+Card
