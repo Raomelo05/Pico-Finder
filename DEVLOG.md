@@ -118,3 +118,17 @@ Text
 Icon
 Image
 Card
+
+
+### começando sprint 2
+
+PF-006 - Melhorar layout da Login
+
+☐ Adicionar logo
+☐ Melhorar título
+☐ Melhorar subtítulo
+☐ Estilizar campo Email
+☐ Estilizar campo Senha
+☐ Estilizar botão Entrar
+☐ Adicionar botão Criar Conta
+☐ Ajustar espaçamentos

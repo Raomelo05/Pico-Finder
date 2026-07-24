@@ -11,8 +11,10 @@ class LoginPage extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(24),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+           crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              const Icon(
+                Icons.skateboarding,),
               const Text(
                 'Pico Finder',
                 style: TextStyle(
@@ -20,25 +22,26 @@ class LoginPage extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              const SizedBox(height: 8),
+               const SizedBox(height: 8),
+             
               const Text(
-                'Encontre os melhores picos de skate da sua região',
+                'Encontre o próximo pico para sua sessão.',
               ),
               TextField(
                 decoration: const InputDecoration(
                   labelText: 'E-mail',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(40))
+                  ),
                 ),
               ),
              const SizedBox(height: 16),
              
              TextField(
               decoration: InputDecoration(
-                labelText: 'Senha',
-                suffixIcon: IconButton(
-                  icon: const Icon(Icons.visibility),
-                  onPressed: () {
-                    // Lógica para mostrar/ocultar a senha
-                  },
+                labelText: 'Senha', 
+                border: OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(40))
                 ),
               ),
              ),
@@ -47,8 +50,19 @@ class LoginPage extends StatelessWidget {
             ElevatedButton(
               onPressed:() {}, 
                child: const Text('Entrar'),
+               style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.green,
+                foregroundColor: Colors.white,
+                minimumSize: const Size.fromHeight(50),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(40),
+                ),
+                ),
+               
                ),
-             
+               const SizedBox(height: 16),
+
+               
                TextButton(
                 onPressed: () {},
                 child: const Text('Esqueci minha senha'),
