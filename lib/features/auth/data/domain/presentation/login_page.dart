@@ -1,63 +1,114 @@
 import 'package:flutter/material.dart';
 
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
   @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  
+  bool _isPasswordVisible = false;
+
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+
+  final _formKey = GlobalKey<FormState>();
+  
+  @override
+  
   Widget build(BuildContext context) {
+   final theme = Theme.of(context);
     return Scaffold(
       body: SafeArea(
+        child: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(24),
-          child: Column(
+          child: Form( 
+            key: _formKey,
+            child: Column(
            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Icon(
                 Icons.skateboarding,),
-              const Text(
+               Text(
                 'Pico Finder',
-                style: TextStyle(
-                  fontSize: 32,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: theme.textTheme.headlineSmall
               ),
                const SizedBox(height: 8),
              
-              const Text(
+               Text(
                 'Encontre o próximo pico para sua sessão.',
+                style: theme.textTheme.bodyMedium,
+                
+                
+              
               ),
-              TextField(
+              const SizedBox(height: 16),
+              
+              TextFormField(
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Por favor, insira seu e-mail';
+                  }
+                  if (value.isEmpty || !value.contains('@')) {
+                    return 'Por favor, insira um e-mail válido';
+                  }
+                  return null;
+                },
+                controller: emailController,
                 decoration: const InputDecoration(
                   labelText: 'E-mail',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(40))
+                  
+              
                   ),
                 ),
-              ),
+              
              const SizedBox(height: 16),
              
-             TextField(
-              decoration: InputDecoration(
+             TextFormField(
+              
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Por favor, insira sua senha';
+                }
+                if (value.length < 6) {
+                  return 'A senha deve ter pelo menos 6 caracteres';
+                }
+                return null;
+              },
+              controller: passwordController,
+              decoration:  InputDecoration(
                 labelText: 'Senha', 
-                border: OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(40))
-                ),
-              ),
-             ),
-             const SizedBox(height: 16),
+                suffixIcon: IconButton(
+                  icon: Icon(Icons.visibility), 
+                  onPressed: (){
+                   setState(() {
+                      _isPasswordVisible = !_isPasswordVisible;
+                    });
+                  },
+                  ),
+                
+                 ),
+                 obscureText: !_isPasswordVisible,
+                 ),
+               
+                  const SizedBox(height: 16),
             
             ElevatedButton(
-              onPressed:() {}, 
+              
+              onPressed:() {
+               if (_formKey.currentState!.validate()){
+               print (emailController.text);
+               print (passwordController.text);
+               }
+               
+              }, 
+                
                child: const Text('Entrar'),
-               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.green,
-                foregroundColor: Colors.white,
-                minimumSize: const Size.fromHeight(50),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(40),
-                ),
-                ),
+              
                
                ),
                const SizedBox(height: 16),
@@ -73,6 +124,7 @@ class LoginPage extends StatelessWidget {
                TextButton(
                 onPressed: () {},
                 child: const Text('Criar uma conta'),
+                
                ),
                
                const SizedBox(height: 16),
@@ -80,6 +132,8 @@ class LoginPage extends StatelessWidget {
           ),
         ),
       ),
+    ),
+        ),
     );
   }
 }

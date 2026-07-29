@@ -1,134 +1,550 @@
-# DEVLOG
+# DEVLOG - Pico Finder
 
-## Sprint 0
+> Objetivo: Registrar os principais conceitos aprendidos durante o desenvolvimento do Pico Finder.
 
-### O que aprendi
+---
 
-- Configurar o Flutter.
-- Criar um projeto Flutter.
-- Estrutura inicial de um projeto.
-- Git Flow (main, develop e feature).
-- Conventional Commits.
+# Sprint 0 - Ambiente e Primeiros Widgets
 
-### Dificuldades
+## Objetivos
 
-- PATH do Flutter.
-- Nome do package.
-- Configuração do Git.
-- Emulador Android.
+- [x] Configurar Flutter
+- [x] Criar projeto
+- [x] Configurar Git
+- [x] Executar aplicativo
+- [x] Estrutura inicial do projeto
 
-### Próximos passos
+---
 
-- Configurar um dispositivo Android físico.
-- Estudar Widgets.
+## Conceitos
 
-### Novos aprendizados 
+### Widget
 
-O que é um Widget?
-Widget é qualquer elemento da interface do usuário.
+Todo elemento da interface é um Widget.
 
+Exemplos:
 
-- MaterialApp ;É a aplicação Flutter. Configura tema, rotas e mais.
-- Scaffold ;Estrutura básica de uma tela (como uma "folha em branco").
-- SafeArea :Evita que o conteúdo fique embaixo do notch, barra de status etc.
-- Center ;Centraliza um widget.
-- Padding ;Adiciona espaçamento interno.
-- Column ;Organiza widgets na vertical.
+- Text
+- Icon
+- Column
+- Scaffold
+- MaterialApp
 
-### Novos aprendizados 1
-Quase tudo no Flutter segue essa lógica:
+---
+
+### Classe → Objeto
+
+Flutter trabalha orientado a objetos.
+
+```dart
+MaterialApp
+```
 
 Classe
+
 ↓
+
+```dart
+MaterialApp()
+```
+
 Objeto
-↓
-Objeto Constante (quando possível)
 
-No Flutter, quase tudo o que colocamos na tela é um objeto criado a partir de uma classe que representa um Widget.
+---
 
-Estado é qualquer informação que pode mudar durante a execução do aplicativo.
+### StatelessWidget
 
-### conceitos do flutter
+Widget cujo estado nunca muda.
 
-class MyApp extends StatelessWidget {
+```dart
+class MyApp extends StatelessWidget
+```
 
-  const MyApp({super.key});
+Possui apenas o método:
 
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp();
-  }
+```dart
+build(BuildContext context)
+```
+
+---
+
+### build()
+
+Responsável por desenhar a interface.
+
+Sempre retorna um Widget.
+
+Sempre que a tela precisa ser reconstruída, o Flutter executa novamente esse método.
+
+---
+
+### BuildContext
+
+Representa a posição do Widget dentro da árvore da aplicação.
+
+Utilizado para acessar:
+
+- Theme
+- Navigator
+- MediaQuery
+- Scaffold
+
+---
+
+## Widgets estudados
+
+### Organização
+
+- MaterialApp
+- Scaffold
+- SafeArea
+- Padding
+- Center
+- Column
+- Row
+- SizedBox
+
+### Exibição
+
+- Text
+- Icon
+- Image
+- Card
+
+### Entrada
+
+- TextField
+- ElevatedButton
+- TextButton
+- IconButton
+
+---
+
+## Erros que encontrei
+
+- PATH do Flutter incorreto
+- Nome inválido do package
+- Git não configurado
+- Emulador Android lento
+
+---
+
+# Sprint 1 - Login UI
+
+## Objetivos
+
+- [x] Criar Login
+- [x] Melhorar Layout
+- [x] Criar Design System
+
+---
+
+## Design System
+
+### AppColors
+
+Centraliza todas as cores.
+
+---
+
+### AppSpacing
+
+Centraliza todos os espaçamentos.
+
+---
+
+### AppTextStyles
+
+Centraliza todos os estilos de texto.
+
+---
+
+### AppTheme
+
+Centraliza toda a aparência do aplicativo.
+
+---
+
+## Widgets estudados
+
+### TextField
+
+Campo para entrada de texto.
+
+Principais propriedades
+
+- controller
+- decoration
+- obscureText
+
+---
+
+### InputDecoration
+
+Personaliza o TextField.
+
+Principais propriedades
+
+- labelText
+- hintText
+- border
+- suffixIcon
+
+---
+
+### OutlineInputBorder
+
+Define borda do campo.
+
+```dart
+OutlineInputBorder(
+  borderRadius: BorderRadius.circular(40),
+)
+```
+
+---
+
+### ElevatedButton
+
+Botão principal.
+
+Principais propriedades
+
+- onPressed
+- child
+- style
+
+---
+
+### ElevatedButton.styleFrom()
+
+Personaliza o botão.
+
+Utilizado para:
+
+- backgroundColor
+- foregroundColor
+- minimumSize
+- shape
+
+---
+
+### RoundedRectangleBorder
+
+Personaliza o formato do botão.
+
+---
+
+## Conceitos
+
+### static
+
+Pertence à classe.
+
+Não precisa criar um objeto.
+
+---
+
+### const
+
+Objeto imutável.
+
+---
+
+### final
+
+Recebe um valor apenas uma vez.
+
+O objeto interno ainda pode sofrer alterações.
+
+---
+
+## Erros que encontrei
+
+- Coloquei width fora do BorderSide.
+- Esqueci vírgula após seedColor.
+- Coloquei TextStyle dentro de TextStyle.
+- Esqueci imports.
+- Tentei usar const com IconButton.
+- Esqueci fechar parênteses.
+
+---
+
+# Sprint 2 - Estado
+
+## Objetivos
+
+- [x] Aprender StatefulWidget
+- [x] Mostrar/Ocultar senha
+- [x] Capturar texto digitado
+
+---
+
+## StatefulWidget
+
+Widget cujo estado pode mudar.
+
+Fluxo:
+
+```
+StatefulWidget
+        │
+        ▼
+createState()
+        │
+        ▼
+State
+        │
+        ▼
+build()
+```
+
+---
+
+## State
+
+Armazena todas as variáveis mutáveis da tela.
+
+Exemplo
+
+```dart
+bool _isPasswordVisible = false;
+```
+
+---
+
+## setState()
+
+Não altera o estado.
+
+Apenas avisa ao Flutter que houve uma alteração e que a interface deve ser reconstruída.
+
+```dart
+setState(() {
+
+});
+```
+
+---
+
+## obscureText
+
+Controla se o texto ficará visível.
+
+```dart
+obscureText: !_isPasswordVisible
+```
+
+---
+
+## IconButton
+
+Botão composto apenas por um ícone.
+
+Principais propriedades
+
+- icon
+- onPressed
+
+---
+
+## onPressed()
+
+Executa uma função quando o botão é clicado.
+
+```dart
+onPressed: () {
 
 }
-= 
+```
 
-A classe MyApp herda de StatelessWidget, ou seja, ela representa um Widget sem estado mutável.
+---
 
-O construtor const MyApp({super.key}) cria um objeto constante da classe MyApp. O super.key envia a Key para a classe pai (StatelessWidget).
+## TextEditingController
 
-O método build() retorna um Widget. Ele recebe um BuildContext como parâmetro e devolve um MaterialApp, que será desenhado pelo Flutter.
+Permite acessar o texto digitado.
 
-MaterialApp = Classe
-MaterialApp(...) = Objeto
-home = Parâmetro nomeado
-MyHomePage() = Outro objeto
+Exemplo
 
-Center(
-    child: Text("Olá")
-)
+```dart
+emailController.text
+```
 
-classe center
-Construtor Center()
-Objeto Center
+---
 
-Recebe um parâmetro chamado child
-Dentro desse parâmetro existe outro objeto
-Text()
+## Fluxo
 
-### Novos aprendizados 2
-
-- Scaffold: O Scaffold é a estrutura básica de uma tela Material Design.
-
-body: é um parâmetro nomeado do Scaffold.
-
-Center() ; classe com objetivo de centralizar o widget
-
-child: parametro do construtor de Center que recebe um Text por ex
-
-### diferentes tipos de widgets
-Widgets de organização
-
-Scaffold
-SafeArea
-Column
-Row
-Padding
-Center
-SizedBox
-
-Widgets de interação
+```
+Usuário
+     │
+     ▼
 TextField
-ElevatedButton
-IconButton
-GestureDetector
-Checkbox
+     │
+     ▼
+Controller
+     │
+     ▼
+Código
+```
 
-Widgets de exibição
-Text
-Icon
-Image
-Card
+---
 
+## Conceitos importantes
 
-### começando sprint 2
+### Variáveis de estado
 
-PF-006 - Melhorar layout da Login
+Mudam durante a execução.
 
-☐ Adicionar logo
-☐ Melhorar título
-☐ Melhorar subtítulo
-☐ Estilizar campo Email
-☐ Estilizar campo Senha
-☐ Estilizar botão Entrar
-☐ Adicionar botão Criar Conta
-☐ Ajustar espaçamentos
+Exemplo
+
+```dart
+bool _isPasswordVisible
+```
+
+---
+
+### Controllers
+
+Não mudam de referência.
+
+Por isso são declarados como:
+
+```dart
+final emailController = TextEditingController();
+```
+
+---
+
+## Erros que encontrei
+
+- Coloquei print fora do onPressed.
+- Escrevi Print() com P maiúsculo.
+- Esqueci remover const do InputDecoration.
+- Coloquei código entre parâmetros do ElevatedButton.
+- Tentei usar final em variável de estado.
+
+---
+
+# Sprint 3 - Formulários
+
+## Objetivos
+
+- [] Form
+- [ ] GlobalKey
+- [ ] TextFormField
+- [ ] Validator
+- [ ] Navegação
+- [ ] HomePage
+
+---
+
+## Próximos conceitos
+
+- Form
+- FormState
+- GlobalKey
+- Validator
+- Navigator
+- Rotas
+
+# Form 
+
+Responsável por agrupar e controlar um formulário.
+
+Trabalha em conjunto com TextFormField.
+
+Permite validar todos os campos de uma única vez.
+
+Estrutura:
+Form
+ └── Column
+      ├── TextFormField
+      ├── TextFormField
+      └── ElevatedButton
+
+       
+# GlobalKey<FormState>
+
+Cria uma referência para o Form.
+
+final _formKey = GlobalKey<FormState>();
+
+FormState
+
+Representa o estado atual do formulário.
+
+# Principais métodos:
+
+validate()
+save()
+reset()
+
+# validator
+
+Função responsável por validar um campo.
+
+Recebe:
+
+(value)
+
+Retorna:
+
+String → existe erro.
+null → campo válido.
+
+Exemplo:
+
+validator: (value) {
+  if (value == null || value.isEmpty) {
+    return 'Campo obrigatório';
+  }
+
+  return null;
+}
+
+# validate()
+
+Executa todos os validator do formulário.
+
+Retorna:
+
+true → todos os campos válidos.
+false → existe pelo menos um erro.
+
+Uso:
+
+if (_formKey.currentState!.validate()) {
+  // Continua o fluxo
+}
+
+## Fluxo do Form
+Clique no botão
+        │
+        ▼
+validate()
+        │
+        ▼
+Executa todos os validators
+        │
+        ▼
+Todos válidos?
+    │          │
+   Sim        Não
+    │          │
+ Continua   Exibe erros
+
+ ## Conceitos aprendidos
+Form é um Widget, não um parâmetro.
+Cada TextFormField valida apenas seu próprio campo.
+O Form coordena a validação de todos os campos.
+validate() retorna um bool.
+A lógica do login deve acontecer apenas quando validate() retornar true.
+
+## 🐛 Erros encontrados
+Tentei adicionar form: como parâmetro do Padding.
+Esqueci a vírgula após o validator.
+Tive dificuldade com os parênteses da árvore de widgets.
+Coloquei o código do login fora do if, fazendo com que ele fosse executado mesmo com o formulário inválido.
+
+### Navigator
+
