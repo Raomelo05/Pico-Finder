@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pico_finder/core/constants/theme/routes/services/utils/app_colors.dart';
+import 'package:pico_finder/core/theme/app_colors.dart';
 
 
 

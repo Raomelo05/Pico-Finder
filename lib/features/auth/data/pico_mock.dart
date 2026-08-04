@@ -1,4 +1,4 @@
-import 'package:pico_finder/features/auth/data/domain/models/pico.dart';
+import 'package:pico_finder/features/auth/data/models/pico.dart';
 
 const List<Pico> mockPicos = [
   Pico(

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pico_finder/core/constants/theme/routes/services/utils/widgets/pico_card.dart';
+import 'package:pico_finder/home/widgets/pico_card.dart';
 import 'package:pico_finder/features/auth/data/pico_mock.dart';
 
 

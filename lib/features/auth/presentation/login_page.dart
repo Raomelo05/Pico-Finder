@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pico_finder/home/presentation/homepage.dart';
-import 'package:pico_finder/core/constants/theme/routes/services/utils/widgets/primary_button.dart';
+import 'package:pico_finder/core/theme/widgets/primary_button.dart';
 
 
 class LoginPage extends StatefulWidget {

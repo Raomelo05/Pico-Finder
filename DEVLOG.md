@@ -758,3 +758,117 @@ Aplicar abstração.
 Aplicar composição de widgets.
 Aplicar o princípio da responsabilidade única (Single Responsibility Principle).
 
+## – Componentização, Modelagem de Dados e Lista Dinâmica
+🎯 Objetivo da Sprint
+
+Nesta etapa o foco foi evoluir a interface do Pico Finder, tornando-a reutilizável e escalável. O objetivo foi aprender a criar componentes personalizados, modelar dados utilizando classes, exibir informações dinamicamente por meio de listas e compreender como o Flutter trabalha com assets locais.
+
+📚 Conceitos Aprendidos
+Componentização
+
+Aprendi a criar widgets reutilizáveis utilizando StatelessWidget, entendendo que um componente deve possuir apenas a responsabilidade de exibir informações, podendo ser utilizado diversas vezes ao longo da aplicação.
+
+Foi criado o componente PrimaryButton, utilizado para padronizar todos os botões da aplicação, e posteriormente o componente PicoCard, responsável por representar um pico de skate.
+
+Também compreendi a importância de utilizar construtores com parâmetros obrigatórios (required) e final, garantindo que cada componente receba apenas as informações necessárias.
+
+Modelagem de Dados
+
+Aprendi a organizar os dados da aplicação através de uma classe de modelo (Model).
+
+Foi criada a classe Pico, contendo informações como:
+
+imagem
+nome
+tipo
+avaliação
+localização
+nível
+
+Esse conceito permitiu separar os dados da interface, tornando o código mais organizado e preparado para futuramente consumir informações vindas de uma API.
+
+Mock de Dados
+
+Antes de utilizar um banco de dados ou API, aprendi a trabalhar com dados simulados.
+
+Foi criada uma lista constante:
+
+ const List<Pico> mockPicos
+
+contendo diversos picos de skate para alimentar a interface da aplicação.
+
+Esse conceito facilita o desenvolvimento da interface sem depender do backend.
+
+ListView
+
+Aprendi a utilizar o ListView para exibir vários widgets de forma vertical e rolável.
+
+Também compreendi que o children recebe uma lista de widgets, permitindo combinar widgets fixos (como títulos) com widgets gerados dinamicamente.
+
+map()
+
+Aprendi o funcionamento do método map().
+
+Compreendi que ele percorre cada objeto de uma lista e o transforma em outro objeto.
+
+No projeto ele foi utilizado para transformar uma lista de objetos Pico em uma lista de widgets PicoCard.
+
+Spread Operator (...)
+
+Aprendi o funcionamento do operador Spread (...).
+
+Entendi que ele "espalha" todos os widgets gerados pelo map() diretamente dentro da lista de children do ListView, eliminando a necessidade de adicionar cada card manualmente.
+
+Também aprendi que, nesse caso, o método .toList() torna-se desnecessário.
+
+Assets
+
+Aprendi como o Flutter trabalha com imagens locais.
+
+Durante o processo surgiram diversos erros relacionados ao carregamento de assets ("Unable to load asset"), permitindo compreender:
+
+estrutura correta da pasta assets
+configuração do pubspec.yaml
+importância da identação do YAML
+diferença entre caminho físico e caminho lógico do asset
+utilização do Image.asset()
+
+Também aprendi a investigar problemas relacionados ao carregamento de imagens utilizando comandos do terminal e verificando a estrutura do projeto.
+
+Debug
+
+Durante esta sprint surgiram diversos erros que precisaram ser investigados.
+
+Entre eles:
+
+ausência do método build()
+imports incorretos
+utilização de variáveis inexistentes
+erros na configuração do pubspec.yaml
+caminhos incorretos de imagens
+warnings do analisador do Dart
+diferença entre erros de compilação e sugestões (Lints)
+
+Essa etapa foi importante para desenvolver a habilidade de interpretar mensagens de erro e localizar a origem dos problemas antes de procurar soluções.
+
+💡 Principais Aprendizados
+
+Ao final desta sprint consegui compreender melhor como um aplicativo Flutter começa a ser estruturado de maneira profissional.
+
+Em vez de repetir código, aprendi a criar componentes reutilizáveis, organizar os dados através de modelos e construir interfaces dinâmicas utilizando listas.
+
+Também desenvolvi uma melhor capacidade de investigar e corrigir erros, entendendo que boa parte do trabalho de um desenvolvedor consiste em interpretar mensagens do compilador e encontrar a causa dos problemas de forma lógica.
+
+🚀 Próximos Passos
+
+Na próxima etapa o objetivo será transformar o Pico Finder em uma aplicação mais interativa, implementando:
+
+Navegação entre telas
+Tela de detalhes de cada pico
+Passagem de objetos entre páginas
+Gerenciamento de estado
+Persistência de dados
+Consumo de API futuramente
+
+
+
