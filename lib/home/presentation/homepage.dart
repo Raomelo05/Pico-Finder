@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pico_finder/core/constants/theme/routes/services/utils/widgets/pico_card.dart';
+import 'package:pico_finder/features/auth/data/pico_mock.dart';
 
 
 class Homepage extends StatelessWidget {
@@ -22,19 +23,20 @@ class Homepage extends StatelessWidget {
       Text( 'Street Parks',
       style: theme.textTheme.titleLarge,
       ),
-      const SizedBox(height: 16),
-      PicoCard(imageUrl: 'assets/images/picos/aurora1.png', 
-      name: 'Aurora Skatepark', 
-      type: 'Street Park', 
-      rating: 4.8, 
-      location: 'Rua da Aurora,Recife,PE', 
-      level: 'iniciantes', 
-      onTap:  (){
-            print('Card clicado');
-
-      },
+      const SizedBox(height: 16),  
+      ...mockPicos .map((pico) => PicoCard(
+        imageUrl: pico.imageUrl,
+        name: pico.name,
+        type: pico.type,
+        rating: pico.rating,
+        location: pico.location,
+        level: pico.level,
+        onTap: () {
+          print('Card clicado: ${pico.name}');
+        },
       ),
-   
+      ),       
+    
     ],
    ),
    );
