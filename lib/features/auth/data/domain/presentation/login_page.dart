@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:pico_finder/home/presentation/homepage.dart';
+import 'package:pico_finder/core/constants/theme/routes/services/utils/widgets/primary_button.dart';
 
 
 class LoginPage extends StatefulWidget {
@@ -97,20 +99,23 @@ class _LoginPageState extends State<LoginPage> {
                
                   const SizedBox(height: 16),
             
-            ElevatedButton(
+            PrimaryButton(
+              text: 'Entrar',
               
               onPressed:() {
                if (_formKey.currentState!.validate()){
                print (emailController.text);
                print (passwordController.text);
+               Navigator.pushReplacement(
+                context, 
+               MaterialPageRoute(
+                builder: (context) => const Homepage(),
+               ),
+                );
                }
                
               }, 
-                
-               child: const Text('Entrar'),
-              
-               
-               ),
+              ),
                const SizedBox(height: 16),
 
                

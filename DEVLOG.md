@@ -548,3 +548,213 @@ Coloquei o código do login fora do if, fazendo com que ele fosse executado mesm
 
 ### Navigator
 
+Responsável por controlar a navegação entre as telas do aplicativo.
+
+Internamente funciona como uma pilha (Stack).
+
+A tela mais recente fica sempre no topo da pilha.
+
+Stack (Pilha)
+
+Exemplo:
+
+Perfil
+──────
+Home
+──────
+Login
+
+O usuário visualiza apenas a tela do topo.
+
+## Navigator.push()
+
+Adiciona uma nova tela na pilha.
+
+Exemplo:
+
+Navigator.push(
+  context,
+  MaterialPageRoute(
+    builder: (context) => const Homepage(),
+  ),
+);
+
+Fluxo:
+
+Login
+
+↓
+
+Home
+
+↓
+
+Voltar
+
+↓
+
+Login
+
+## Navigator.pushReplacement()
+
+Substitui a tela atual por outra.
+
+Exemplo:
+
+Navigator.pushReplacement(
+  context,
+  MaterialPageRoute(
+    builder: (context) => const Homepage(),
+  ),
+);
+
+Fluxo:
+
+Login
+
+↓
+
+Home
+
+↓
+
+Voltar
+
+↓
+
+Aplicativo fecha (ou minimiza)
+
+Ideal para:
+
+Login
+Splash Screen
+Onboarding
+Logout
+
+## MaterialPageRoute
+
+Representa uma rota entre duas telas.
+
+Recebe um builder responsável por construir a próxima página.
+
+Exemplo:
+
+MaterialPageRoute(
+  builder: (context) => const Homepage(),
+)
+builder
+
+É uma função que cria a tela quando ela for necessária.
+
+Exemplo:
+
+builder: (context) => const Homepage()
+BuildContext
+
+O Navigator utiliza o BuildContext para localizar o ponto da árvore de widgets onde a navegação deve acontecer.
+
+Fluxo da navegação
+Clique no botão
+
+↓
+
+validate()
+
+↓
+
+true
+
+↓
+
+Navigator.pushReplacement()
+
+↓
+
+HomePage
+
+# Conceitos aprendidos
+O Navigator não valida informações.
+O Navigator apenas troca de telas.
+A validação continua sendo responsabilidade do Form.
+push() adiciona uma tela à pilha.
+pushReplacement() substitui a tela atual.
+Cada tela é um Widget.
+MaterialPageRoute define qual tela será aberta.
+builder cria a nova tela.
+
+# 🐛 Erros encontrados
+Esqueci o ; após o Navigator.push().
+Não utilizei const Homepage().
+Tive dúvida sobre a animação padrão do MaterialPageRoute.
+Entendi que o comportamento do botão Voltar depende da pilha do Navigator.
+
+## Widget reutilizável (PrimaryButton)
+
+Um widget personalizado é uma classe criada pelo desenvolvedor para encapsular um conjunto de widgets e reutilizá-los em várias partes da aplicação.
+
+Exemplo:
+
+class PrimaryButton extends StatelessWidget
+Objetivo
+
+Evitar repetição de código e centralizar a aparência e o comportamento de componentes reutilizados.
+
+# Estrutura
+
+Um widget reutilizável possui:
+
+atributos (final)
+construtor
+método build()
+
+Exemplo:
+
+final String text;
+final VoidCallback onPressed;
+
+## required
+
+Obriga quem utiliza o widget a fornecer os parâmetros necessários.
+
+Exemplo:
+
+PrimaryButton(
+  text: 'Entrar',
+  onPressed: () {},
+)
+
+# VoidCallback
+
+Representa uma função sem parâmetros e sem retorno.
+
+É utilizado para ações como onPressed.
+
+Composição de Widgets
+
+O PrimaryButton não cria um botão do zero.
+
+Ele reutiliza um ElevatedButton.
+
+PrimaryButton
+        ↓
+ElevatedButton
+
+No Flutter, widgets podem ser compostos por outros widgets.
+
+Benefícios:
+Evita repetição de código.
+Centraliza alterações visuais.
+Facilita manutenção.
+Melhora organização do projeto.
+Torna as telas mais limpas.
+Favorece reutilização de componentes.
+Conceitos aprendidos
+Criar um widget personalizado.
+Receber dados pelo construtor.
+Repassar esses dados para widgets internos.
+Utilizar required.
+Utilizar VoidCallback.
+Aplicar abstração.
+Aplicar composição de widgets.
+Aplicar o princípio da responsabilidade única (Single Responsibility Principle).
+
