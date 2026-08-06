@@ -5,6 +5,7 @@ class Pico {
   final double rating;
   final String location;
   final String level;
+  final String description;
 
   const Pico({
     required this.imageUrl,
@@ -13,5 +14,6 @@ class Pico {
     required this.rating,
     required this.location,
     required this.level,
+    required this.description,
   });
 }
