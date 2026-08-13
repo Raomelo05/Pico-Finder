@@ -1,38 +1,55 @@
 import 'package:flutter/material.dart';
 import 'package:pico_finder/home/widgets/pico_card.dart';
 import 'package:pico_finder/home/presentation/pico_details_page.dart';
-import 'package:pico_finder/features/auth/data/repositories/pico_repository.dart';
-import 'package:pico_finder/features/auth/data/models/pico.dart';
+import 'package:provider/provider.dart';
+import 'package:pico_finder/providers/pico_provider.dart';
 
 
-class Homepage extends StatelessWidget {
-  Homepage({super.key});
-
-final PicoRepository picoRepository = PicoRepository();
+class Homepage extends StatefulWidget {
+  const Homepage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
+  State<Homepage> createState() => _HomepageState();
+}
+  class _HomepageState extends State<Homepage> {
     
+
+    @override
+    void initState() {
+      super.initState();
+    
+     context.read<PicoProvider>().carregarPicos();
+    }
+   
+    @override
+    Widget build(BuildContext context){
+    final provider = context.watch<PicoProvider>();
+    final theme = Theme.of(context);
     
     return Scaffold(
    appBar: AppBar(
-    title: 
-    Text('Pico Finder',
+    title: Text
+    ('Pico Finder',
     style: theme.textTheme.headlineSmall
-    ),
+     ),
     ),
    
-   body: FutureBuilder<List<Pico>>(
-    future: picoRepository.getPicos(),
-    builder: (context, snapshot) {
-      
-      if (!snapshot.hasData) {
+   body: Builder(
+    builder: (context) {
+
+      if (provider.isLoading) {
+      return const Center(child: 
+      CircularProgressIndicator(),
+      );
+     }
+     
+     if (provider.error != null) {
         return const Center(
-          child: CircularProgressIndicator());
+          child: Text('Erro ao carregar os picos.'),
+        );
       }
-      final picos = snapshot.data!;
+      
+      final picos = provider.picos;
 
       return ListView(
         padding: const EdgeInsets.all(16),
@@ -41,8 +58,11 @@ final PicoRepository picoRepository = PicoRepository();
             'Street Parks',
             style: theme.textTheme.titleLarge,
           ),
+          
           const SizedBox(height: 16),
-          ...picos.map((pico) => PicoCard(
+          
+          ...picos.map(
+            (pico) => PicoCard(
                 imageUrl: pico.imageUrl,
                 name: pico.name,
                 type: pico.type,
@@ -53,10 +73,12 @@ final PicoRepository picoRepository = PicoRepository();
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => PicoDetailsPage(pico: pico),
+                      builder: (context) => PicoDetailsPage(
+                        pico: pico
+                        ),
                     ),
                   );
-                  print('Card clicado: ${pico.name}');
+               
                 },
               )),
         ],
@@ -65,7 +87,7 @@ final PicoRepository picoRepository = PicoRepository();
     ),
 
    );
-   
+}
 
 }
-}
+

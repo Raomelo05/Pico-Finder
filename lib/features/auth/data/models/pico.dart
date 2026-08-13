@@ -16,4 +16,21 @@ class Pico {
     required this.level,
     required this.description,
   });
+
+
+ factory Pico.fromJson(Map<String, dynamic> json) {
+    return Pico(
+      imageUrl: json['imageUrl'],
+      name: json['name'],
+      type: json['type'],
+      rating: (json['rating'] as num).toDouble(),
+      location: json['location'],
+      level: json['level'],
+      description: json['description'],
+    );
+ }
+
+
 }
+
+
