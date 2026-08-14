@@ -17,8 +17,11 @@ class Homepage extends StatefulWidget {
     @override
     void initState() {
       super.initState();
+     
+     WidgetsBinding.instance.addPostFrameCallback((_){
+      context.read<PicoProvider>().carregarPicos();
+     });
     
-     context.read<PicoProvider>().carregarPicos();
     }
    
     @override
@@ -50,6 +53,12 @@ class Homepage extends StatefulWidget {
       }
       
       final picos = provider.picos;
+
+        if (picos.isEmpty) {
+         return const Center(
+          child: Text('Nenhum pico encontrado'),
+          );
+      }
 
       return ListView(
         padding: const EdgeInsets.all(16),

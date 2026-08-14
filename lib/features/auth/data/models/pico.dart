@@ -29,7 +29,18 @@ class Pico {
       description: json['description'],
     );
  }
+  Map<String,dynamic> toJson(){
+    return{
+      'imageUrl':imageUrl,
+      'name':name,
+      'type': type,
+      'rating':rating,
+      'location':location,
+      'level':level,
+      'description':description,
+    };
 
+ }
 
 }
 

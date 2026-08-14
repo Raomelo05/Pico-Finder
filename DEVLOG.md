@@ -871,4 +871,312 @@ Persistência de dados
 Consumo de API futuramente
 
 
+## dica 1 (API)
+Fluxo importante da API
+
+ API
+ ↓
+JSON
+ ↓
+response.body
+ ↓
+jsonDecode()
+ ↓
+List<dynamic>
+ ↓
+map()
+ ↓
+Pico.fromJson()
+ ↓
+List<Pico>
+ ↓
+FutureBuilder
+ ↓
+PicoCard
+
+Esse é o fluxo que você precisa saber explicar (provavelmente) no teste técnico.
+
+## dica 2 (State Mangement)
+
+Conceito:	         Para que serve:
+
+StatelessWidget	     UI sem estado local mutável
+
+StatefulWidget	     UI com estado local
+
+setState()	         Atualizar estado local de um StatefulWidget
+
+Provider	         Disponibilizar/organizar estado para widgets
+
+ChangeNotifier	     Notificar que um estado mudou
+
+ChangeNotifierProvider coloca um ChangeNotifier à disposição da árvore de  widgets
+
+notifyListeners()	 Avisar os widgets que estão observando
+
+Consumer	         Permitir que um widget observe um Provider
+
+context.watch()	     Observar o estado e reconstruir quando ele mudar
+
+context.read()	     Acessar o estado sem reconstruir o widget quando ele 
+mudar
+
+create               Cria uma instância do Provider
+
+
+
+
+## dica 3 (algumas explicações basicas)
+
+Conceito:	 Para que serve:
+
+String	     Armazenar texto
+
+String?	     Armazenar texto ou null
+
+null	     Representar ausência de valor
+
+error	     Guardar uma mensagem de erro       
+
+## dica 4 (mapa mental)
+
+três estados
+
+Guarde este mapa mental:
+
+             RESPOSTA DA API
+                   │
+        ┌──────────┼──────────┐
+        ↓          ↓          ↓
+     Loading      Error      Success
+        │          │          │
+        ↓          ↓          ↓
+    Carregando    Erro       Dados
+                              │
+                         ┌────┴────┐
+                         ↓         ↓
+                       Lista      Vazia
+                         │         │
+                         ↓         ↓
+                       Cards    Empty State
+
+
+Estado:             Para que serve:
+
+isLoading	        Informar que os dados ainda estão sendo carregados
+
+error	            Informar que ocorreu um problema
+
+picos com dados	    Mostrar os picos
+
+picos.isEmpty	    Informar que não existem picos
+
+## persistencia local
+
+o que é persistência?
+
+Persistência significa:
+
+guardar dados para que eles continuem existindo depois que o aplicativo é fechado.
+
+Por exemplo:
+
+Sem persistência:
+
+Abriu app
+   ↓
+API
+   ↓
+dados
+   ↓
+fechou app
+   ↓
+dados temporários perdidos
+
+Com persistência:
+
+Abriu app
+   ↓
+API
+   ↓
+dados
+   ↓
+salva no dispositivo
+   ↓
+fecha app
+   ↓
+abre novamente
+   ↓
+dados continuam disponíveis
+
+## fluxo com persistencia 
+
+Mapa mental:
+                    UI = homepage
+                     │
+                     ↓
+               PicoProvider
+                     │
+                     ↓
+               PicoRepository (decicidindo de onde deve puxar os dados)
+                ↙           ↘
+               ↓             ↓
+             API        Local Storage
+               │             │
+               ↓             ↓
+          Dados remotos  Dados locais
+
+## primeiro conceito: SharedPreferences
+
+é usado para armazenar pequenas informações persistentes, geralmente em formato chave → valor.
+
+Persistência local:
+       │
+       ├── Storage simples
+       │      ↓
+       │  SharedPreferences
+       │
+       └── Dados estruturados
+              ↓
+          Banco local
+
+## dica 5 
+
+Conceito:	        Para que serve:
+SharedPreferences	Persistir pequenos dados no dispositivo
+Chave (key)	        Identificar o dado armazenado
+Valor (value)	    Informação associada à chave
+setString()	        Salvar uma String
+getString()	        Recuperar uma String
+setBool()	        Salvar um bool
+getBool()	        Recuperar um bool
+remove()	        Remover um valor
+
+## enxergar o ciclo:
+
+APP
+ ↓
+SharedPreferences
+ ↓
+salva um valor
+ ↓
+app fecha
+ ↓
+app abre novamente
+ ↓
+recupera o valor
+
+## dica 6
+Método	                    Conversão
+Pico.fromJson()	           Map → Pico
+pico.toJson()	              Pico → Map
+jsonDecode()	              String → Map/List
+jsonEncode()	              Map/List → String
+
+## dica 7
+
+Conceito	                Para que serve
+toJson()	                Converter um objeto Pico em Map
+fromJson()	             Converter um Map em Pico
+jsonEncode()	          Converter Map/List em String
+jsonDecode()	          Converter String em Map/List
+map()	                   Transformar cada elemento de uma coleção
+List<Pico>	             Lista de objetos da aplicação
+List<Map>	             Estrutura intermediária para JSON
+String	                Formato que vamos armazenar no SharedPreferences
+
+## mapa mental:
+
+Mapa completo
+             API
+              ↓
+          JSON String
+              ↓
+         jsonDecode()
+              ↓
+             Map
+              ↓
+       Pico.fromJson()
+              ↓
+             Pico
+              │
+              │
+          toJson()
+              ↓
+             Map
+              ↓
+         jsonEncode()
+              ↓
+          JSON String
+              ↓
+      SharedPreferences
+
+## Regra para guardar
+
+Persistência é basicamente fazer o caminho de ida e volta.
+
+Pico
+ ↓
+Map
+ ↓
+String
+ ↓
+Storage
+
+Storage
+ ↓
+String
+ ↓
+Map
+ ↓
+Pico
+
+## dica 8 — Persistência
+Conceito	               Para que serve
+SharedPreferences	      Armazenar dados simples localmente
+setString()	            Salvar uma String
+getString()          	Recuperar uma String
+toJson()	               Pico → Map
+fromJson()	            Map → Pico
+jsonEncode()	         Map/List → String
+jsonDecode()	         String → Map/List
+savePicos()	            Salvar a lista localmente
+loadPicos()	            Recuperar a lista localmente
+
+## Mapa mental
+                 API
+                  ↓
+              JSON String
+                  ↓
+             jsonDecode()
+                  ↓
+                 Map
+                  ↓
+            Pico.fromJson()
+                  ↓
+               List<Pico>
+                  │
+                  │
+              toJson()
+                  ↓
+              List<Map>
+                  ↓
+             jsonEncode()
+                  ↓
+              JSON String
+                  ↓
+          SharedPreferences
+                  │
+                  ↓
+             getString()
+                  ↓
+              JSON String
+                  ↓
+             jsonDecode()
+                  ↓
+              Pico.fromJson()
+                  ↓
+               List<Pico>
+
+
 

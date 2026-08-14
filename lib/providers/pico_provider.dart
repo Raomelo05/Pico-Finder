@@ -14,29 +14,31 @@ bool isLoading = false;
 
 String? error;
 
-Future carregarPicos() async {
-  try {
-    isLoading = true;
-    error = null;
+Future<void> carregarPicos() async {
+  isLoading = true;
+  error = null;
+  notifyListeners();
+ 
+ 
+ try {
+    final picosSalvos = await picoRepository.loadPicos();
+    
+    if (picosSalvos.isNotEmpty) {
+      picos = picosSalvos;
+    } else {
+      final picosApi = await picoRepository.getPicos();
 
-    notifyListeners();
+      picos = picosApi;
 
-    final resultado = await picoRepository.getPicos();
-
-    picos = resultado;
-
-    isLoading = false;
-
-    notifyListeners();
+      await picoRepository.savePicos(picosApi);
+    }
+   
   } catch (e) {
-    isLoading = false;
-    error = 'Erro ao carregar os picos';
-
-    notifyListeners();
-
-  }
+  error = e.toString();
+  }finally{
+   isLoading = false;
+   notifyListeners();
+ }
 }
-
-
 
 }
