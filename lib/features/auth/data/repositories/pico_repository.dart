@@ -4,11 +4,14 @@ import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PicoRepository {
+   final http.Client client;
+
+   PicoRepository(this.client);
+
   Future<List<Pico>> getPicos() async {
    
-   final response = await http.get
-   (Uri.parse('https://6a7c6eada008c10e4cbf6768.mockapi.io/pico/api/v1/Picos')
-   
+   final response = await client.get
+   (Uri.parse('https://6a7c6eada008c10e4cbf6768.mockapi.io/pico/api/v1/Picos'),
    );
 
    if (response.statusCode != 200) {

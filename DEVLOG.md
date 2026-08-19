@@ -1180,3 +1180,537 @@ loadPicos()	            Recuperar a lista localmente
 
 
 
+## Testes:
+
+                 TESTES
+                   │
+        ┌──────────┼──────────┐
+        ↓          ↓          ↓
+      Unit       Widget   Integration
+        │          │          │
+      lógica       UI       aplicativo
+
+
+
+## Conceito	           Para que serve
+Mock	              Simular uma dependência real durante o teste
+Dependência	        Algo que seu código precisa para funcionar
+HTTP mockado	     Simular uma resposta da API
+Teste isolado	     Testar uma parte sem depender de serviços externos
+
+ guarde esta hierarquia
+Unit Test
+   │
+   ├── Model
+   │     ├── fromJson() ✅
+   │     └── toJson()   ✅
+   │
+   └── Repository
+         ↓
+       HTTP
+         ↓
+       Mock
+
+       
+
+## Não pense: API vs Mock
+Pense:
+
+                  TESTE
+                    │
+                    ↓
+             PicoRepository
+                    │
+                    ↓
+              precisa de HTTP
+               ↙           ↘
+        produção           teste
+           ↓                  ↓
+       HTTP real           HTTP mockado
+           ↓                  ↓
+          API             resposta falsa
+
+
+
+## Novo conceito
+
+
+Conceito	                   Para que serve
+Dependência	                Objeto/serviço que uma classe precisa
+Injeção de dependência	    Entregar essa dependência para a classe
+Mock	                      Implementação falsa usada no teste
+http.Client	                Cliente responsável pelas requisições HTTP
+
+
+Mapa mental:
+
+PicoRepository
+      │
+      │ recebe
+      ↓
+ http.Client
+   ↙       ↘
+real       mock
+ ↓          ↓
+API       teste
+
+
+
+## Dica 9 — Injeção de Dependência
+
+Em vez de uma classe criar ou escolher diretamente aquilo que precisa, nós entregamos a dependência para ela.
+
+No nosso caso:
+
+❌ Repository decide qual HTTP usar
+
+
+✅ Repository recebe qual HTTP usar
+
+Isso deixa o código mais testável, flexível e desacoplado.
+
+## Dica 10 — setUp vs setUpAll
+Conceito	                     Para que serve
+setUp()	                     Executa antes de cada teste
+setUpAll()	                  Executa uma vez antes de todos os testes
+registerFallbackValue()	      Registra um valor que o mocktail pode usar 
+                              como fallback
+any()	                        Aceita qualquer valor daquele tipo
+
+
+E guarde esta ideia:
+setUpAll()
+   ↓
+configuração geral dos testes
+
+
+setUp()
+   ↓
+preparação individual de cada teste
+
+
+test()
+   ↓
+executa o teste
+
+## estado da arquitetura:
+
+                    Pico Finder
+                        │
+              ┌─────────┴─────────┐
+              ↓                   ↓
+             API            Persistência Local
+              │                   │
+              ↓                   ↓
+        getPicos()          SharedPreferences
+              │                   │
+              └─────────┬─────────┘
+                        ↓
+                  PicoRepository
+                        ↓
+                    PicoProvider
+                        ↓
+                       UI
+
+
+## Dica 11 — Testes de persistência
+Conceito:                 Para que serve:
+
+setMockInitialValues()	  Criar armazenamento inicial em memória
+setString()	              Simular dados sendo armazenados
+getString()	              Recuperar dados armazenados
+isNotNull	              Garantir que algo foi salvo
+Teste de persistência	  Garantir que salvar/carregar funciona
+
+## Dica 12 — Provider em testes
+Conceito:	                   Para que serve:
+PicoRepository	                Buscar/salvar os dados
+PicoProvider	                Controlar o estado da aplicação
+isLoading	                   Informar que uma operação está acontecendo
+picos	                         Guardar os dados carregados
+error	                         Guardar informação sobre falha
+notifyListeners()	             Avisar a UI que o estado mudou
+
+## Dica 13 — Teste por camada
+
+Camada	       Testamos
+Pico	          Conversão JSON ↔ objeto
+PicoRepository	 API e persistência
+PicoProvider	 Estado e regras de negócio
+UI	             Comportamento visual/interação
+
+## Conceito:	         Para que serve:
+
+expect()	               Verificar um valor/resultado
+verify()	               Verificar se uma chamada aconteceu
+.called(1)	            Exigir que tenha acontecido uma vez
+when()	               Definir como o Mock deve responder
+thenAnswer()	         Definir a resposta assíncrona do Mock
+
+## guarde esta hierarquia
+
+Mocktail
+   │
+   ├── when()
+   │     └── "Quando chamarem isso..."
+   │
+   ├── thenAnswer()
+   │     └── "...responda com isso"
+   │
+   ├── expect()
+   │     └── "O resultado foi o esperado?"
+   │
+   └── verify()
+         └── "Essa ação aconteceu?"
+
+  ## Uma regra importante do Mocktail:
+
+Quando seu código chama uma função do Mock, você precisa dizer ao Mock como ele deve se comportar.
+
+Código chama:
+loadPicos()
+     ↓
+when() + thenAnswer() ✅
+
+
+Código chama:
+getPicos()
+     ↓
+when() + thenAnswer() ✅
+
+
+Código chama:
+savePicos()
+     ↓
+when() + thenAnswer() ✅    
+
+Só depois usar o verify...
+
+## Dica 14 — Tratamento de erros em testes
+Conceito	                   Para que serve
+thenThrow()	                Fazer um Mock lançar uma exceção
+catch	                      Capturar uma exceção
+error	                      Armazenar informação sobre a falha
+finally	                   Executar código independentemente de sucesso ou erro
+
+expect()	                  Verificar o estado final
+
+## Então guarde esta hierarquia:
+Mock
+ │
+ └── thenThrow()
+        ↓
+     Exception
+        ↓
+    Provider
+        ↓
+      catch
+        ↓
+     error
+        ↓
+     finally
+        ↓
+  isLoading = false
+
+
+
+
+## Conceito → Para que serve Widget tests:
+Conceito	                   Para que serve
+Unit Test	                Testar lógica isoladamente
+Widget Test	                Testar comportamento de Widgets
+WidgetTester	             Interagir com Widgets durante o teste
+pumpWidget()	             Montar um Widget no ambiente de teste
+find	                      Procurar Widgets na árvore
+findsOneWidget	             Verificar se existe exatamente um Widget
+
+
+## Mapa mental: Widget test
+              TESTES
+                 │
+        ┌────────┴────────┐
+        ↓                 ↓
+     LÓGICA               UI
+        │                 │
+   Unit Test         Widget Test
+        │                 │
+   Model/Repo/       Homepage/
+   Provider          PicoCard
+
+   ## Conceito → Para que serve
+Conceito	             Para que serve
+Widget Test	          Testar o comportamento de uma parte da interface
+WidgetTester	       Controlar e interagir com a árvore de widgets no teste
+pumpWidget()	       Montar um widget no ambiente de teste
+find	                Procurar widgets na interface
+findsOneWidget	       Verificar se existe exatamente um widget
+pump()	             Processar mudanças de estado/frame
+pumpAndSettle()	    Aguardar até que a árvore estabilize
+
+ Então guarde esta hierarquia:
+Widget Test
+    │
+    ├── pumpWidget()
+    │      ↓
+    │   monta a UI
+    │
+    ├── find
+    │      ↓
+    │   procura algo
+    │
+    └── expect
+           ↓
+       verifica se
+       está correto
+
+## Dica 16 — Widget Tests
+Conceito:	      Para que serve:
+testWidgets()	   Criar um teste para Widgets
+WidgetTester	   Interagir com a árvore de Widgets
+pumpWidget()	   Montar a interface no ambiente de teste
+pumpAndSettle()	Processar as atualizações até a UI estabilizar
+find.text()	      Procurar um texto na interface
+findsOneWidget	   Garantir que existe exatamente um Widget correspondente
+Asset de teste	   Fornecer recursos necessários para a UI ser montada
+
+Então guarde esta hierarquia
+                   TESTES
+                      │
+          ┌───────────┴───────────┐
+          ↓                       ↓
+       Unit Test             Widget Test
+          │                       │
+          ↓                       ↓
+    Model/Repository/       Homepage/PicoCard
+       Provider                    │
+                                  ↓
+                           pumpWidget()
+                                  ↓
+                              UI montada
+                                  ↓
+                               find()
+                                  ↓
+
+ 
+## Conceito → Para que serve
+Conceito	         Para que serve
+
+Completer	      Permitir controlar manualmente quando um Future termina
+Completer.future	   Representar o Future que ainda está pendente
+completer.complete()	Liberar o Future e fornecer seu resultado
+pump()	            Processar um frame da UI
+
+## Completer
+   │
+   ├── future
+   │     ↓
+   │   fica pendente
+   │
+   └── complete()
+         ↓
+      Future termina
+
+## Conceito	      Para que serve
+testWidgets()	   Criar testes específicos para Widgets
+pumpWidget()	   Montar a árvore de Widgets
+pump()	         Processar um frame
+pumpAndSettle()	Aguardar a UI estabilizar
+find.byType()	   Procurar um Widget pelo tipo
+CircularProgressIndicator	Representar visualmente o estado de carregamento
+Completer	      Controlar manualmente quando um Future termina
+
+
+Então guarde esta hierarquia
+                Widget Test
+                     │
+                 pumpWidget()
+                     │
+                     ↓
+                  Homepage
+                     │
+                Provider
+                     │
+          ┌──────────┴──────────┐
+          ↓                     ↓
+     isLoading = true       dados carregados
+          ↓                     ↓
+       Loading               PicoCard
+          ↓                     ↓
+     pump()                 expect()
+
+## O fluxo do teste 
+pumpWidget()
+      ↓
+Homepage montada
+      ↓
+initState()
+      ↓
+carregarPicos()
+      ↓
+loadPicos()
+      ↓
+Exception
+      ↓
+catch
+      ↓
+error = ...
+      ↓
+isLoading = false
+      ↓
+notifyListeners()
+      ↓
+Homepage reconstrói
+      ↓
+find.text()
+      ↓
+expect()
+
+Perceba como temos uma cadeia completa:
+
+Mock
+ ↓
+Provider
+ ↓
+Estado
+ ↓
+UI
+ ↓
+Teste
+
+
+
+
+Dica 18 — Error State
+
+Conceito	                  Para que serve
+thenThrow()	               Simular uma falha
+catch	                     Capturar a falha no Provider
+error	                     Representar o estado de erro
+pumpAndSettle()	         Aguardar a atualização completa da UI
+find.text()	               Encontrar uma mensagem na interface
+
+
+Então guarde esta hierarquia
+
+Erro
+  ↓
+Exception
+  ↓
+Provider.catch
+  ↓
+error != null
+  ↓
+notifyListeners()
+  ↓
+Homepage
+  ↓
+Mensagem de erro
+
+## Dica 19— Widget Tests
+Conceito	          Para que serve
+testWidgets()	    Testar comportamento de Widgets
+pumpWidget()	    Montar a interface
+pump()	          Processar um frame
+pumpAndSettle()	 Aguardar atualizações assíncronas
+find.text()	       Procurar texto na UI
+find.byType()	    Procurar um Widget pelo tipo
+findsOneWidget	    Garantir exatamente um resultado
+Completer	       Controlar um Future durante o teste
+thenThrow()	       Simular uma exceção
+
+Então guarde esta hierarquia
+                 Homepage
+                    │
+          ┌─────────┼─────────┐
+          ↓         ↓         ↓
+       Loading     Error    Success
+          ↓         ↓         ↓
+       Spinner   Mensagem   PicoCard
+                    │
+                    └──────────────┐
+                                   ↓
+                                Empty
+                                   ↓
+                         Nenhum pico encontrado
+
+
+E o que você está fazendo nos testes:
+
+MockRepository
+      ↓
+PicoProvider
+      ↓
+estado
+      ↓
+Homepage
+      ↓
+Widget
+      ↓
+expect()
+
+## Dica 19 — Empty State
+Conceito	          Para que serve
+Empty State	       Representar ausência de dados sem tratar como erro
+isEmpty	          Verificar se a lista está vazia
+find.text()	       Procurar a mensagem na UI
+pumpAndSettle()	 Esperar toda a atualização assíncrona terminar
+
+Então guarde esta hierarquia:
+                   
+                    Homepage
+                       │
+             ┌─────────┼─────────┐
+             ↓         ↓         ↓
+          Loading     Error    Resultado
+                                  │
+                           ┌──────┴──────┐
+                           ↓             ↓
+                         Empty         Dados
+                           ↓             ↓
+                    Mensagem          Cards
+
+
+## Unit Tests:
+Conceito	            Para que serve
+test() 	            Criar um teste de lógica
+expect()	            Comparar resultado esperado e obtido
+Mock	               Substituir uma dependência real
+when()	            Definir como o Mock deve responder
+thenAnswer()	      Definir uma resposta assíncrona
+thenThrow()	         Simular uma exceção
+verify()	            Verificar se uma chamada aconteceu
+setUp()	            Preparar cada teste
+setUpAll()	         Fazer uma configuração uma vez para todos os testes
+registerFallbackValue()	       Registrar um tipo usado com any()
+Completer	                   Controlar manualmente um Future
+
+## Widget Tests:
+Conceito	                    Para que serve
+testWidgets()	              Testar comportamento da UI
+WidgetTester	              Interagir com a árvore de Widgets
+pumpWidget()	              Montar a aplicação no ambiente de teste
+pump()	                    Processar um frame
+pumpAndSettle()	           Aguardar atualizações assíncronas terminarem
+find.text()	                 Procurar um texto
+find.byType()	              Procurar um Widget pelo tipo
+findsOneWidget	              Garantir exatamente um resultado
+
+
+##gi Então guarde esta hierarquia
+                         TESTES
+                            │
+              ┌─────────────┴─────────────┐
+              ↓                           ↓
+          Unit Test                  Widget Test
+              │                           │
+       ┌──────┼──────┐               Homepage
+       ↓      ↓      ↓                   │
+     Model  Repo   Provider               ↓
+       ✅     ✅       ✅              Estados da UI
+                                       │
+                              ┌────────┼────────┐
+                              ↓        ↓        ↓
+                           Loading   Error    Empty
+                              ✅        ✅        ✅
+                                     
+                              Success ✅
