@@ -1714,3 +1714,58 @@ findsOneWidget	              Garantir exatamente um resultado
                               ✅        ✅        ✅
                                      
                               Success ✅
+
+
+## Dica 21 — Integration Tests
+Conceito	                          Para que serve
+integration_test	                 Testar o aplicativo de ponta a ponta
+IntegrationTestWidgetsFlutterBinding	Preparar o ambiente de integração
+app.main()	                          Iniciar o aplicativo real
+-d <device>	          Escolher o dispositivo onde o teste será executado
+pumpAndSettle()	                 Aguardar a interface estabilizar
+
+## Conceito → Para que serve
+Conceito	                   Para que serve
+enterText()	                Simular digitação em um campo
+tap()	                      Simular toque em um Widget
+find.byType()	             Encontrar Widget pelo tipo
+find.text()	                Encontrar um texto
+pumpAndSettle()	          Esperar a navegação e atualizações terminarem
+Navigator.pushReplacement() Substituir a tela atual pela próxima
+
+## Conceito	Para que serve
+app.main()	                        Iniciar o aplicativo real
+find.byType(TextFormField)	       Encontrar os campos do formulário
+at()	        Selecionar um elemento específico de uma coleção de Widgets
+enterText()	              Simular digitação do usuário
+tap()	                    Simular toque
+pumpAndSettle()	        Aguardar navegação/atualizações da UI
+find.text()               Verificar elementos renderizados
+Integration Test	 Validar um fluxo real entre várias partes do    aplicativo
+
+## Conceito → Para que serve Validação
+Tokens
+
+Conceito	                    Para que serve
+Token	Representar            uma sessão/autenticação válida
+Access Token	              Permitir acesso autenticado a recursos
+Authorization	              Enviar credencial na requisição
+Bearer Token	              Formato comum de envio do token
+Sessão	                    Estado de usuário autenticado
+
+## Conceito → Para que serve
+Conceito	         Para que serve
+Unauthenticated	Usuário não está autenticado
+Authenticating	   Login está sendo processado
+Authenticated	   Usuário está autenticado
+Authentication    Error	Login falhou
+
+## Conceito	Para que serve
+GET	           Buscar dados
+POST	           Enviar dados para o servidor
+headers	        Informar metadados da requisição
+Content-Type	  Informar o formato do corpo enviado
+body	           Dados enviados para a API
+jsonEncode()	  Transformar um Map em JSON String
+jsonDecode()	  Transformar JSON String em dados Dart
+statusCode	     Indicar o resultado HTTP da requisição

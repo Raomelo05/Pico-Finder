@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pico_finder/home/presentation/homepage.dart';
 import 'package:pico_finder/core/theme/widgets/primary_button.dart';
+import 'package:provider/provider.dart';
+import 'package:pico_finder/providers/auth_provider.dart';
 
 
 class LoginPage extends StatefulWidget {
@@ -23,6 +25,7 @@ class _LoginPageState extends State<LoginPage> {
   
   Widget build(BuildContext context) {
    final theme = Theme.of(context);
+   final authProvider = context.watch<AuthProvider>();
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -55,14 +58,12 @@ class _LoginPageState extends State<LoginPage> {
                   if (value == null || value.isEmpty) {
                     return 'Por favor, insira seu e-mail';
                   }
-                  if (value.isEmpty || !value.contains('@')) {
-                    return 'Por favor, insira um e-mail válido';
-                  }
+                 
                   return null;
                 },
                 controller: emailController,
                 decoration: const InputDecoration(
-                  labelText: 'E-mail',
+                  labelText: 'Usuário',
                   
               
                   ),
@@ -102,21 +103,47 @@ class _LoginPageState extends State<LoginPage> {
             PrimaryButton(
               text: 'Entrar',
               
-              onPressed:() {
+              onPressed:() async {
+                if(authProvider.isloading) {
+                  return;
+                }
+              
                if (_formKey.currentState!.validate()){
-               print (emailController.text);
-               print (passwordController.text);
-               Navigator.pushReplacement(
-                context, 
-               MaterialPageRoute(
-                builder: (context) => Homepage(),
-               ),
-                );
-               }
+                await context.read<AuthProvider>().login(
+                  username: emailController.text,
+                  password: passwordController.text
+                  );
                
-              }, 
-              ),
-               const SizedBox(height: 16),
+               final authProvider = context.read<AuthProvider>();
+
+               if(authProvider.isAuthenticated &&  mounted) { 
+                Navigator.pushReplacement(
+                  context, 
+                  MaterialPageRoute(
+                    builder: (context) => const Homepage(),
+                    ),
+                    );
+               }
+             }
+            }, 
+          ),
+               if(authProvider.error != null)
+               Padding(
+                padding: const EdgeInsets.only(top: 8),
+                child: Text(
+                  authProvider.error!,
+                  style: const TextStyle(color: Colors.red),
+                  ),
+                  ),
+                  
+                  if(authProvider.isloading)
+                  const Padding(
+                    padding: EdgeInsets.only(top:12),
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  ),
+                const SizedBox(height: 16),
 
                
                TextButton(

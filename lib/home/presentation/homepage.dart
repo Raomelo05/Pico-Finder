@@ -3,6 +3,7 @@ import 'package:pico_finder/home/widgets/pico_card.dart';
 import 'package:pico_finder/home/presentation/pico_details_page.dart';
 import 'package:provider/provider.dart';
 import 'package:pico_finder/providers/pico_provider.dart';
+import 'package:pico_finder/providers/auth_provider.dart';
 
 
 class Homepage extends StatefulWidget {
@@ -35,6 +36,14 @@ class Homepage extends StatefulWidget {
     ('Pico Finder',
     style: theme.textTheme.headlineSmall
      ),
+     actions: [
+      IconButton(
+        icon: const Icon(Icons.logout),
+        onPressed: () async{
+          await context.read<AuthProvider>().logout();
+        },
+       ),
+     ],
     ),
    
    body: Builder(
