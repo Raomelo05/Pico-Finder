@@ -3,11 +3,17 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:pico_finder/features/auth/data/models/auth_user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class AuthRepository {
   final http.Client client;
 
-  AuthRepository(this.client);
+  final FlutterSecureStorage secureStorage;
+
+  AuthRepository(
+    this.client,
+    this.secureStorage,
+    );
 
   Future<AuthUser> login({
     required String username,
@@ -41,25 +47,35 @@ return user;
   }
 
   Future <void> saveSession(AuthUser user) async {
-    final prefs = await SharedPreferences.getInstance();
+    await secureStorage.write(
+      key: 'accessToken',
+      value: user.accessToken,
+    );
 
-    await prefs.setString('accessToken', user.accessToken!);
-    await prefs.setString('refreshToken', user.refreshToken!);
+    await secureStorage.write(
+      key: 'refreshToken', 
+      value: user.refreshToken
+    );
+
+    final prefs = await SharedPreferences.getInstance();
+    
     await prefs.setString('username', user.username);
   }
 
   Future<String?> getAccessToken() async {
-    final prefs = await SharedPreferences.getInstance();
+    final token = await secureStorage.read(
+      key: 'accessToken',
+      );
+    
+      return token;      
 
-    return prefs.getString('accessToken');
   }
 
   Future<void> clearSession() async {
-    final prefs = await SharedPreferences.getInstance();
+    await secureStorage.deleteAll();
 
-    await prefs.remove('accessToken');
-    await prefs.remove('refreshToken');
-    await prefs.remove('username');
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.remove('username');
   }
 
   Future<AuthUser> getCurrentUser(String token) async {

@@ -18,12 +18,15 @@ class AuthProvider  extends ChangeNotifier {
 
     bool isCheckingSession = true;
 
+    int _authOperation = 0;
+
 
     Future <void> login({
     required String username,
     required String password,
-
-    }) async {
+     }) async {
+     ++_authOperation;
+    
       isloading = true;
       error = null;
       notifyListeners();
@@ -44,36 +47,47 @@ class AuthProvider  extends ChangeNotifier {
    }
 
    Future<void> checkSession() async {
-   try {
-    final token = await authRepository.getAccessToken();
+   final operation = ++_authOperation;
 
-    
+  try {
+    final token = await authRepository.getAccessToken();
 
     if (token == null || token.isEmpty) {
       return;
     }
+
     final currentUser = await authRepository.getCurrentUser(token);
 
-        
-   user = currentUser;
-   } catch (e){
-      
-      await authRepository.clearSession();
-    user = null;
-   }finally{
-    isCheckingSession = false;
-       notifyListeners();
+    if (operation != _authOperation) {
+      return;
+    }
 
-   }
+    user = currentUser;
+  } catch (e) {
+    if (operation != _authOperation) {
+      return;
+    }
+
+    await authRepository.clearSession();
+    user = null;
+  } finally {
+    if (operation == _authOperation) {
+      isCheckingSession = false;
+      notifyListeners();
+    }
+  }
    
    }
 
     Future <void> logout() async {
-    await authRepository.clearSession();
+    ++_authOperation;
 
-    user = null;
+  await authRepository.clearSession();
 
-    notifyListeners();
+  user = null;
+  isCheckingSession = false;
+
+  notifyListeners();
   }
 
   }

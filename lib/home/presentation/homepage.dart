@@ -40,6 +40,7 @@ class Homepage extends StatefulWidget {
       IconButton(
         icon: const Icon(Icons.logout),
         onPressed: () async{
+
           await context.read<AuthProvider>().logout();
         },
        ),

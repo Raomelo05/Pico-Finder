@@ -8,8 +8,9 @@ import 'package:provider/provider.dart';
 import 'package:pico_finder/providers/pico_provider.dart';
 import 'package:pico_finder/features/auth/data/repositories/pico_repository.dart';
 import 'package:pico_finder/features/auth/data/repositories/auth_repository.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-
+final secureStorage = const FlutterSecureStorage();
 
 void main() {
   runApp(
@@ -26,6 +27,7 @@ void main() {
           create: (_) => AuthProvider(
             AuthRepository(
               http.Client(),
+              secureStorage,
             ),
           ),
         ),
@@ -69,6 +71,8 @@ class _AuthGateState extends State<AuthGate> {
   @override 
   Widget build(BuildContext context) {
     final authProvider = context.watch<AuthProvider>();
+ 
+
 
    if(authProvider.isCheckingSession) {
     return const Scaffold(

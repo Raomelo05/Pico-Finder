@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pico_finder/home/presentation/homepage.dart';
 import 'package:pico_finder/core/theme/widgets/primary_button.dart';
 import 'package:provider/provider.dart';
 import 'package:pico_finder/providers/auth_provider.dart';
@@ -113,17 +112,7 @@ class _LoginPageState extends State<LoginPage> {
                   username: emailController.text,
                   password: passwordController.text
                   );
-               
-               final authProvider = context.read<AuthProvider>();
-
-               if(authProvider.isAuthenticated &&  mounted) { 
-                Navigator.pushReplacement(
-                  context, 
-                  MaterialPageRoute(
-                    builder: (context) => const Homepage(),
-                    ),
-                    );
-               }
+              
              }
             }, 
           ),
